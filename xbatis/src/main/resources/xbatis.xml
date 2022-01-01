@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.njdi.durian.xbatis.mapper.XbatisMapper">
+  <sql id="filters">
+    <if test="${filters} != null">
+      <foreach collection="${filters}" item="filter">
+        <if test="filter.operator.name() == 'EQ'">
+          AND ${filter.name} = #{filter.values[0]}
+        </if>
+        <if test="filter.operator.name() == 'NE'">
+          AND ${filter.name} != #{filter.values[0]}
+        </if>
+        <if test="filter.operator.name() == 'GT'">
+          AND ${filter.name} > #{filter.values[0]}
+        </if>
+        <if test="filter.operator.name() == 'LT'">
+          AND ${filter.name} &lt; #{filter.values[0]}
+        </if>
+        <if test="filter.operator.name() == 'GE'">
+          AND ${filter.name} >= #{filter.values[0]}
+        </if>
+        <if test="filter.operator.name() == 'LE'">
+          AND ${filter.name} &lt;= #{filter.values[0]}
+        </if>
+        <if test="filter.operator.name() == 'BETWEEN'">
+          AND ${filter.name} BETWEEN #{filter.values[0]} AND #{filter.values[1]}
+        </if>
+        <if test="filter.operator.name() == 'LIKE'">
+          AND ${filter.name} LIKE CONCAT('%', #{filter.values[0]}, '%')
+        </if>
+        <if test="filter.operator.name() == 'IN'">
+          AND ${filter.name} IN
+          <foreach collection="filter.values" item="value" open="(" separator="," close=")">
+            #{value}
+          </foreach>
+        </if>
+        <if test="filter.operator.name() == 'NOT_IN'">
+          AND ${filter.name} NOT IN
+          <foreach collection="filter.values" item="value" open="(" separator="," close=")">
+            #{value}
+          </foreach>
+        </if>
+        <if test="filter.operator.name() == 'IS_NULL'">
+          AND ${filter.name} IS NULL
+        </if>
+        <if test="filter.operator.name() == 'IS_NOT_NULL'">
+          AND ${filter.name} IS NOT NULL
+        </if>
+      </foreach>
+    </if>
+  </sql>
+
+  <sql id="select">
+    SELECT
+
+    <choose>
+      <when test="fields != null">
+        <foreach collection="fields" item="field" separator=",">
+          ${field.name}
+          <if test="field.alias != null">
+            AS ${field.alias}
+          </if>
+        </foreach>
+      </when>
+      <otherwise>
+        *
+      </otherwise>
+    </choose>
+
+    FROM
+
+    <if test="table != null">
+      ${table}
+    </if>
+
+    <trim prefix="WHERE" prefixOverrides="AND |OR ">
+      <include refid="filters">
+        <property name="filters" value="wheres"/>
+      </include>
+    </trim>
+
+    <if test="groups != null and groups.size > 0">
+      GROUP BY
+      <foreach collection="groups" item="group" separator=",">
+        ${group}
+      </foreach>
+    </if>
+
+    <trim prefix="HAVING" prefixOverrides="AND |OR ">
+      <include refid="filters">
+        <property name="filters" value="havings"/>
+      </include>
+    </trim>
+
+    <if test="orders != null and orders.size > 0">
+      ORDER BY
+      <foreach collection="orders" item="order" separator=",">
+        ${order.name} ${order.sort}
+      </foreach>
+    </if>
+
+    <if test="limit != null">
+      LIMIT
+      #{limit}
+    </if>
+
+    <if test="offset != null">
+      OFFSET
+      #{offset}
+    </if>
+  </sql>
+
+  <select id="page" resultType="java.util.HashMap">
+    <include refid="select">
+    </include>
+  </select>
+
+  <sql id="update">
+    UPDATE
+
+    <if test="table != null">
+      ${table}
+    </if>
+
+    <set>
+      <foreach collection="pairs" item="pair" separator=",">
+        ${pair.name} = #{pair.value}
+      </foreach>
+    </set>
+
+    <where>
+      <include refid="filters">
+        <property name="filters" value="wheres"/>
+      </include>
+    </where>
+  </sql>
+
+  <update id="update">
+    <include refid="update">
+    </include>
+  </update>
+
+  <sql id="create">
+    INSERT INTO
+
+    <if test="table != null">
+      ${table}
+    </if>
+
+    <foreach collection="pairs" item="pair" open="(" separator="," close=")">
+      ${pair.name}
+    </foreach>
+
+    VALUES
+
+    <foreach collection="pairs" item="pair" open="(" separator="," close=")">
+      #{pair.value}
+    </foreach>
+  </sql>
+
+  <insert id="create" useGeneratedKeys="true" keyProperty="id">
+    <include refid="create"/>
+  </insert>
+
+  <sql id="delete">
+    DELETE FROM
+
+    <if test="table != null">
+      ${table}
+    </if>
+
+    <where>
+      <include refid="filters">
+        <property name="filters" value="wheres"/>
+      </include>
+    </where>
+  </sql>
+
+  <delete id="delete">
+    <include refid="delete"/>
+  </delete>
+</mapper>
