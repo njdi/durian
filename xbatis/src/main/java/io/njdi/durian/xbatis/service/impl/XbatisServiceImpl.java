@@ -1,5 +1,6 @@
 package io.njdi.durian.xbatis.service.impl;
 
+import io.njdi.durian.common.util.Bean;
 import io.njdi.durian.xbatis.mapper.XbatisMapper;
 import io.njdi.durian.xbatis.model.*;
 import io.njdi.durian.xbatis.model.schema.Database;
@@ -82,6 +83,11 @@ public class XbatisServiceImpl implements XbatisService {
     log.info("page(transformed): {}", page);
 
     return commonDao.page(page);
+  }
+
+  @Override
+  public <T> List<T> page(Page page, Class<T> clazz) {
+    return Bean.converts(clazz, page(page));
   }
 
   @Override

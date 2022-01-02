@@ -16,6 +16,8 @@ public interface XbatisService {
 
   List<Map<String, Object>> page(Page page);
 
+  <T> List<T> page(Page page, Class<T> clazz);
+
   int updates(Updates updates);
 
   int update(Update update);
