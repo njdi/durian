@@ -138,14 +138,14 @@ public class XbatisServiceImpl implements XbatisService {
             .build();
 
     List<Map<String, Object>> rows = page(page);
-    if (rows.size() != values.size()) {
-      Map<Object, Map<String, Object>> idToRows =
-              rows.stream()
-                      .collect(Collectors.toMap(row -> row.get(name),
-                              Function.identity()));
 
-      rows = values.stream().map(id -> idToRows.getOrDefault(id, null)).toList();
-    }
+    Map<Object, Map<String, Object>> idToRows =
+            rows.stream()
+                    .collect(Collectors.toMap(row -> row.get(name),
+                            Function.identity()));
+    rows = values.stream()
+            .map(id -> idToRows.getOrDefault(id, null))
+            .toList();
 
     return rows;
   }
