@@ -8,12 +8,14 @@ import io.njdi.durian.xbatis.model.schema.Transformer;
 import io.njdi.durian.xbatis.model.schema.Validator;
 import io.njdi.durian.xbatis.service.XbatisService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -88,6 +90,64 @@ public class XbatisServiceImpl implements XbatisService {
   @Override
   public <T> List<T> page(Page page, Class<T> clazz) {
     return Bean.converts(clazz, page(page));
+  }
+
+  @Override
+  public <T> T id(String table, String name, Object value, Class<T> clazz,
+                  Field... fields) {
+    List<T> objs = ids(table, name, List.of(value), clazz, fields);
+
+    return CollectionUtils.isNotEmpty(objs) ? objs.get(0) : null;
+  }
+
+  @Override
+  public <T> List<T> ids(String table, String name, List<Object> values,
+                         Class<T> clazz, Field... fields) {
+    if (StringUtils.isEmpty(table)
+            || StringUtils.isEmpty(name)
+            || CollectionUtils.isEmpty(values)
+            || Objects.isNull(clazz)) {
+      return Collections.emptyList();
+    }
+
+
+    List<Map<String, Object>> rows = ids(table, name, values, fields);
+
+    return Bean.converts(clazz, rows);
+  }
+
+  @Override
+  public List<Map<String, Object>> ids(String table, String name,
+                                       List<Object> values, Field... fields) {
+    if (StringUtils.isEmpty(table)
+            || StringUtils.isEmpty(name)
+            || CollectionUtils.isEmpty(values)) {
+      return Collections.emptyList();
+    }
+
+    Filter<Object> filterWithIds = Filter.builder()
+            .name(name)
+            .operator(Filter.Operator.IN)
+            .values(values)
+            .build();
+
+    Page page = Page.builder()
+            .fields(Arrays.asList(fields))
+            .table(table)
+            .where(filterWithIds)
+            .build();
+
+    List<Map<String, Object>> rows = page(page);
+    if (rows.size() != values.size()) {
+      Map<Object, Map<String, Object>> idToRows =
+              rows.stream()
+                      .collect(Collectors.toMap(row -> row.get(name),
+                              Function.identity()));
+
+      rows = values.stream().map(id -> idToRows.getOrDefault(id, null)).toList();
+    }
+
+    return rows;
   }
 
   @Override

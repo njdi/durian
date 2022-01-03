@@ -18,6 +18,15 @@ public interface XbatisService {
 
   <T> List<T> page(Page page, Class<T> clazz);
 
+  <T> T id(String table, String name, Object value, Class<T> clazz,
+           Field... fields);
+
+  <T> List<T> ids(String table, String name, List<Object> values,
+                  Class<T> clazz, Field... fields);
+
+  List<Map<String, Object>> ids(String table, String name,
+                                List<Object> values, Field... fields);
+
   int updates(Updates updates);
 
   int update(Update update);
