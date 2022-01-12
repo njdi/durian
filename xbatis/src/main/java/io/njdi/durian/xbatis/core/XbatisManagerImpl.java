@@ -31,7 +31,7 @@ public class XbatisManagerImpl implements XbatisManager {
   private Validator validator;
 
   @Autowired
-  private XbatisMapper commonDao;
+  private XbatisMapper xbatisMapper;
 
   @Override
   public List<Integer> creates(Creates creates) {
@@ -46,11 +46,14 @@ public class XbatisManagerImpl implements XbatisManager {
 
   @Override
   public int create(Create create) {
+    log.debug("create: {}", create);
+
     validator.validate(create);
     create = transformer.transform(create);
-    log.info("create(transformed): {}", create);
 
-    commonDao.create(create);
+    log.debug("create(transformed): {}", create);
+
+    xbatisMapper.create(create);
 
     return create.getId();
   }
@@ -68,20 +71,26 @@ public class XbatisManagerImpl implements XbatisManager {
 
   @Override
   public int delete(Delete delete) {
+    log.debug("delete: {}", delete);
+
     validator.validate(delete);
     delete = transformer.transform(delete);
-    log.info("delete(transformed): {}", delete);
 
-    return commonDao.delete(delete);
+    log.debug("delete(transformed): {}", delete);
+
+    return xbatisMapper.delete(delete);
   }
 
   @Override
   public List<Map<String, Object>> page(Page page) {
+    log.debug("page: {}", page);
+
     validator.validate(page);
     page = transformer.transform(page);
-    log.info("page(transformed): {}", page);
 
-    return commonDao.page(page);
+    log.debug("page(transformed): {}", page);
+
+    return xbatisMapper.page(page);
   }
 
   @Override
@@ -160,10 +169,13 @@ public class XbatisManagerImpl implements XbatisManager {
 
   @Override
   public int update(Update update) {
+    log.debug("update: {}", update);
+
     validator.validate(update);
     update = transformer.transform(update);
-    log.info("delete(transformed): {}", update);
 
-    return commonDao.update(update);
+    log.debug("delete(transformed): {}", update);
+
+    return xbatisMapper.update(update);
   }
 }
