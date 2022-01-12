@@ -1,11 +1,11 @@
-package io.njdi.durian.xbatis.service;
+package io.njdi.durian.xbatis;
 
 import io.njdi.durian.xbatis.model.*;
 
 import java.util.List;
 import java.util.Map;
 
-public interface XbatisService {
+public interface XbatisManager {
   List<Integer> creates(Creates creates);
 
   int create(Create create);

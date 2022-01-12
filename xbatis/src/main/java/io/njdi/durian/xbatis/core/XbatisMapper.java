@@ -1,4 +1,4 @@
-package io.njdi.durian.xbatis.mapper;
+package io.njdi.durian.xbatis.core;
 
 import io.njdi.durian.xbatis.model.Create;
 import io.njdi.durian.xbatis.model.Delete;

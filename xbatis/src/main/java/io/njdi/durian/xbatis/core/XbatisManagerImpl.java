@@ -1,29 +1,26 @@
-package io.njdi.durian.xbatis.service.impl;
+package io.njdi.durian.xbatis.core;
 
 import io.njdi.durian.common.util.Bean;
-import io.njdi.durian.xbatis.mapper.XbatisMapper;
+import io.njdi.durian.xbatis.XbatisManager;
 import io.njdi.durian.xbatis.model.*;
 import io.njdi.durian.xbatis.model.schema.Database;
-import io.njdi.durian.xbatis.model.schema.Transformer;
-import io.njdi.durian.xbatis.model.schema.Validator;
-import io.njdi.durian.xbatis.service.XbatisService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-@Service
+@Component
 @Slf4j
-public class XbatisServiceImpl implements XbatisService {
+public class XbatisManagerImpl implements XbatisManager {
   private final Database database;
 
   @Autowired
-  public XbatisServiceImpl(Database database) {
+  public XbatisManagerImpl(Database database) {
     this.database = database;
     this.database.validate();
   }

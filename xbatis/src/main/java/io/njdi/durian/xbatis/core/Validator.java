@@ -1,6 +1,8 @@
-package io.njdi.durian.xbatis.model.schema;
+package io.njdi.durian.xbatis.core;
 
 import io.njdi.durian.xbatis.model.*;
+import io.njdi.durian.xbatis.model.schema.Database;
+import io.njdi.durian.xbatis.model.schema.Table;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
