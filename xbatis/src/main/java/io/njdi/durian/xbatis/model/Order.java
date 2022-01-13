@@ -15,6 +15,9 @@ public class Order {
   @Builder.Default
   private Sort sort = Sort.ASC;
 
+  @Builder.Default
+  private boolean expr = false;
+
   public enum Sort {
     ASC,
     DESC

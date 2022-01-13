@@ -186,6 +186,10 @@ public class Validator {
       }
 
       Class<?> type = table.getColumn(name).getType();
+      if (type.isArray()) {
+        type = type.getComponentType();
+      }
+
       Object value = values.get(0);
       if (!type.isInstance(value)) {
         throw new RuntimeException(
@@ -250,6 +254,10 @@ public class Validator {
     List<String> names = database.getTable(tableName).getColumnNames();
 
     for (Order order : orders) {
+      if (order.isExpr()) {
+        continue;
+      }
+
       String name = order.getName();
       if (!names.contains(name)) {
         throw new RuntimeException("Page order " + name + " doesn't exist");

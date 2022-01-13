@@ -123,6 +123,10 @@ public class Transformer {
 
     orders = orders.stream()
             .peek(order -> {
+              if (order.isExpr()) {
+                return;
+              }
+
               String name = order.getName();
               order.setName(aliases.getOrDefault(name, name));
             })
