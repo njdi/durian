@@ -53,6 +53,10 @@ public class Transformer {
 
     fields = fields.stream()
             .peek(field -> {
+              if (field.isExpr()) {
+                return;
+              }
+
               String name = field.getName();
               if (!aliases.containsKey(name)) {
                 return;

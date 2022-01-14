@@ -209,6 +209,10 @@ public class Validator {
     List<String> names = table.getColumnNames();
 
     for (Field field : fields) {
+      if (field.isExpr()) {
+        continue;
+      }
+
       String name = field.getName();
       if (StringUtils.isEmpty(name)) {
         throw new RuntimeException(
