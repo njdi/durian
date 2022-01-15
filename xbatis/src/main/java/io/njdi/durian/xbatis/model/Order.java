@@ -1,22 +1,18 @@
 package io.njdi.durian.xbatis.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 @Data
-@Builder
-@NoArgsConstructor
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 @AllArgsConstructor
-public class Order {
+@SuperBuilder
+public class Order extends Expression {
   private String name;
 
   @Builder.Default
   private Sort sort = Sort.ASC;
-
-  @Builder.Default
-  private boolean expr = false;
 
   public enum Sort {
     ASC,

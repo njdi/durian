@@ -1,5 +1,6 @@
 package io.njdi.durian.xbatis.model;
 
+import io.njdi.durian.xbatis.model.where.Where;
 import lombok.*;
 
 import java.util.List;
@@ -13,11 +14,11 @@ public class Page {
   private List<Field> fields;
   private String table;
   @Singular
-  private List<Filter<?>> wheres;
+  private List<Where> wheres;
   @Singular
   private List<String> groups;
   @Singular
-  private List<Filter<?>> havings;
+  private List<Where> havings;
   @Singular
   private List<Order> orders;
 

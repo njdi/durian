@@ -3,6 +3,11 @@ package io.njdi.durian.xbatis.core;
 import io.njdi.durian.xbatis.model.*;
 import io.njdi.durian.xbatis.model.schema.Database;
 import io.njdi.durian.xbatis.model.schema.Table;
+import io.njdi.durian.xbatis.model.where.AndFilter;
+import io.njdi.durian.xbatis.model.where.Filter;
+import io.njdi.durian.xbatis.model.where.NotFilter;
+import io.njdi.durian.xbatis.model.where.OrFilter;
+import io.njdi.durian.xbatis.model.where.Where;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -104,15 +109,106 @@ public class Validator {
     }
   }
 
-  private void validateFilters(String tableName, List<Filter<?>> filters,
-                               Context context) {
+  private void validateFilter(Table table, Filter filter, Context context) {
+    if (filter.isExpr()) {
+      return;
+    }
+
+    String tableName = table.getName();
+    List<String> names = table.getColumnNames();
+
+    String name = filter.getName();
+    if (!names.contains(name)) {
+      throw new RuntimeException(
+              "Table " + tableName + " doesn't have column " + name);
+    }
+
+    Filter.Operator operator = filter.getOperator();
+    List<?> values = filter.getValues();
+
+    switch (operator) {
+      case IS_NULL, IS_NOT_NULL -> {
+        if (CollectionUtils.isNotEmpty(values)) {
+          throw new RuntimeException(
+                  "Filter is null, is not null values must be empty(null)");
+        }
+      }
+
+      case EQ, NE, GT, LT, GE, LE, LIKE -> {
+        if (CollectionUtils.isEmpty(values) || values.size() != 1) {
+          throw new RuntimeException(
+                  "Filter =, !=, >, <, >=, <=, like values must be 1");
+        }
+      }
+
+      case BETWEEN -> {
+        if (CollectionUtils.isEmpty(values) || values.size() != 2) {
+          throw new RuntimeException(
+                  "Filter between...and values must be 2");
+        }
+      }
+
+      case IN, NOT_IN -> {
+        if (Objects.isNull(values)) {
+          throw new RuntimeException(
+                  "Filter in, not in values must not be null");
+        }
+      }
+    }
+
+    if (CollectionUtils.isEmpty(values)) {
+      return;
+    }
+
+    Class<?> type = table.getColumn(name).getType();
+    if (type.isArray()) {
+      type = type.getComponentType();
+    }
+
+    Object value = values.get(0);
+    if (!type.isInstance(value)) {
+      throw new RuntimeException(
+              "Column " + name + " of table " + tableName + " is of type " + type.getName()
+                      + ", but value " + value);
+    }
+  }
+
+  private void validateWhere(Table table, Where where, Context context) {
+    if (where instanceof AndFilter) {
+      List<Filter> filters = ((AndFilter) where).getFilters();
+      if (CollectionUtils.isEmpty(filters) || filters.size() < 2) {
+        throw new RuntimeException("AndFilter need at least two or more Filters.");
+      }
+
+      filters.forEach(filter -> validateFilter(table, filter, context));
+    } else if (where instanceof OrFilter) {
+      List<Filter> filters = ((OrFilter) where).getFilters();
+      if (CollectionUtils.isEmpty(filters) || filters.size() < 2) {
+        throw new RuntimeException("OrFilter need at least two or more Filters.");
+      }
+
+      filters.forEach(filter -> validateFilter(table, filter, context));
+    } else if (where instanceof NotFilter) {
+      Filter filter = ((NotFilter) where).getFilter();
+      if (Objects.isNull(filter)) {
+        throw new RuntimeException("NotFilter needs a Filter.");
+      }
+
+      validateFilter(table, filter, context);
+    } else {
+      Filter filter = (Filter) where;
+      validateFilter(table, filter, context);
+    }
+  }
+
+  private void validateWheres(String tableName, List<Where> wheres, Context context) {
     if (context == Context.CREATE || context == null) {
       return;
     }
 
     Table table = database.getTable(tableName);
 
-    if (CollectionUtils.isEmpty(filters)) {
+    if (CollectionUtils.isEmpty(wheres)) {
       switch (context) {
         case DELETE -> {
           if (table.isDeleteMustHaveWhere()) {
@@ -139,63 +235,8 @@ public class Validator {
       return;
     }
 
-    List<String> names = table.getColumnNames();
-
-    for (Filter<?> filter : filters) {
-      String name = filter.getName();
-      if (!names.contains(name)) {
-        throw new RuntimeException(
-                "Table " + tableName + " doesn't have column " + name);
-      }
-
-      Filter.Operator operator = filter.getOperator();
-      List<?> values = filter.getValues();
-
-      switch (operator) {
-        case IS_NULL, IS_NOT_NULL -> {
-          if (CollectionUtils.isNotEmpty(values)) {
-            throw new RuntimeException(
-                    "Filter is null, is not null values must be empty(null)");
-          }
-        }
-
-        case EQ, NE, GT, LT, GE, LE, LIKE -> {
-          if (CollectionUtils.isEmpty(values) || values.size() != 1) {
-            throw new RuntimeException(
-                    "Filter =, !=, >, <, >=, <=, like values must be 1");
-          }
-        }
-
-        case BETWEEN -> {
-          if (CollectionUtils.isEmpty(values) || values.size() != 2) {
-            throw new RuntimeException(
-                    "Filter between...and values must be 2");
-          }
-        }
-
-        case IN, NOT_IN -> {
-          if (Objects.isNull(values)) {
-            throw new RuntimeException(
-                    "Filter in, not in values must not be null");
-          }
-        }
-      }
-
-      if (CollectionUtils.isEmpty(values)) {
-        continue;
-      }
-
-      Class<?> type = table.getColumn(name).getType();
-      if (type.isArray()) {
-        type = type.getComponentType();
-      }
-
-      Object value = values.get(0);
-      if (!type.isInstance(value)) {
-        throw new RuntimeException(
-                "Column " + name + " of table " + tableName + " is of type " + type.getName()
-                        + ", but value " + value);
-      }
+    for (Where where : wheres) {
+      validateWhere(table, where, context);
     }
   }
 
@@ -285,16 +326,16 @@ public class Validator {
   public void validate(Delete delete) {
     validateTable(delete.getTable());
     validateOperate(delete.getTable(), Context.DELETE);
-    validateFilters(delete.getTable(), delete.getWheres(), Context.DELETE);
+    validateWheres(delete.getTable(), delete.getWheres(), Context.DELETE);
   }
 
   public void validate(Page page) {
     validateTable(page.getTable());
     validateOperate(page.getTable(), Context.PAGE);
     validateFields(page.getTable(), page.getFields());
-    validateFilters(page.getTable(), page.getWheres(), Context.PAGE);
+    validateWheres(page.getTable(), page.getWheres(), Context.PAGE);
     validateGroups(page.getTable(), page.getGroups());
-    validateFilters(page.getTable(), page.getHavings(), null);
+    validateWheres(page.getTable(), page.getHavings(), null);
     validateOrders(page.getTable(), page.getOrders());
     validateLimit(page.getTable(), page.getLimit());
   }
@@ -303,6 +344,6 @@ public class Validator {
     validateTable(update.getTable());
     validateOperate(update.getTable(), Context.UPDATE);
     validatePairs(update.getTable(), update.getPairs(), Context.UPDATE);
-    validateFilters(update.getTable(), update.getWheres(), Context.UPDATE);
+    validateWheres(update.getTable(), update.getWheres(), Context.UPDATE);
   }
 }

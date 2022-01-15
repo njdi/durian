@@ -3,51 +3,78 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="io.njdi.durian.xbatis.core.XbatisMapper">
+  <sql id="filter">
+    <if test="filter.operator.name() == 'EQ'">
+      ${filter.name} = #{filter.values[0]}
+    </if>
+    <if test="filter.operator.name() == 'NE'">
+      ${filter.name} != #{filter.values[0]}
+    </if>
+    <if test="filter.operator.name() == 'GT'">
+      ${filter.name} > #{filter.values[0]}
+    </if>
+    <if test="filter.operator.name() == 'LT'">
+      ${filter.name} &lt; #{filter.values[0]}
+    </if>
+    <if test="filter.operator.name() == 'GE'">
+      ${filter.name} >= #{filter.values[0]}
+    </if>
+    <if test="filter.operator.name() == 'LE'">
+      ${filter.name} &lt;= #{filter.values[0]}
+    </if>
+    <if test="filter.operator.name() == 'BETWEEN'">
+      ${filter.name} BETWEEN #{filter.values[0]} AND #{filter.values[1]}
+    </if>
+    <if test="filter.operator.name() == 'LIKE'">
+      ${filter.name} LIKE CONCAT('%', #{filter.values[0]}, '%')
+    </if>
+    <if test="filter.operator.name() == 'IN'">
+      ${filter.name} IN
+      <foreach collection="filter.values" item="value" open="(" separator="," close=")">
+        #{value}
+      </foreach>
+    </if>
+    <if test="filter.operator.name() == 'NOT_IN'">
+      ${filter.name} NOT IN
+      <foreach collection="filter.values" item="value" open="(" separator="," close=")">
+        #{value}
+      </foreach>
+    </if>
+    <if test="filter.operator.name() == 'IS_NULL'">
+      ${filter.name} IS NULL
+    </if>
+    <if test="filter.operator.name() == 'IS_NOT_NULL'">
+      ${filter.name} IS NOT NULL
+    </if>
+  </sql>
+
   <sql id="filters">
     <if test="${filters} != null">
-      <foreach collection="${filters}" item="filter">
-        <if test="filter.operator.name() == 'EQ'">
-          AND ${filter.name} = #{filter.values[0]}
-        </if>
-        <if test="filter.operator.name() == 'NE'">
-          AND ${filter.name} != #{filter.values[0]}
-        </if>
-        <if test="filter.operator.name() == 'GT'">
-          AND ${filter.name} > #{filter.values[0]}
-        </if>
-        <if test="filter.operator.name() == 'LT'">
-          AND ${filter.name} &lt; #{filter.values[0]}
-        </if>
-        <if test="filter.operator.name() == 'GE'">
-          AND ${filter.name} >= #{filter.values[0]}
-        </if>
-        <if test="filter.operator.name() == 'LE'">
-          AND ${filter.name} &lt;= #{filter.values[0]}
-        </if>
-        <if test="filter.operator.name() == 'BETWEEN'">
-          AND ${filter.name} BETWEEN #{filter.values[0]} AND #{filter.values[1]}
-        </if>
-        <if test="filter.operator.name() == 'LIKE'">
-          AND ${filter.name} LIKE CONCAT('%', #{filter.values[0]}, '%')
-        </if>
-        <if test="filter.operator.name() == 'IN'">
-          AND ${filter.name} IN
-          <foreach collection="filter.values" item="value" open="(" separator="," close=")">
-            #{value}
-          </foreach>
-        </if>
-        <if test="filter.operator.name() == 'NOT_IN'">
-          AND ${filter.name} NOT IN
-          <foreach collection="filter.values" item="value" open="(" separator="," close=")">
-            #{value}
-          </foreach>
-        </if>
-        <if test="filter.operator.name() == 'IS_NULL'">
-          AND ${filter.name} IS NULL
-        </if>
-        <if test="filter.operator.name() == 'IS_NOT_NULL'">
-          AND ${filter.name} IS NOT NULL
-        </if>
+      <foreach collection="${filters}" item="filter" separator=" AND ">
+        <choose>
+          <when test="@io.njdi.durian.xbatis.model.where.Filter@isFilter(filter)">
+            <include refid="filter"/>
+          </when>
+
+          <when test="@io.njdi.durian.xbatis.model.where.Filter@isAndFilter(filter)">
+            <foreach collection="filter.filters" item="filter" separator=" AND ">
+              <include refid="filter"/>
+            </foreach>
+          </when>
+
+          <when test="@io.njdi.durian.xbatis.model.where.Filter@isOrFilter(filter)">
+            <foreach collection="filter.filters" item="filter" open="(" separator=" OR " close=")">
+              <include refid="filter"/>
+            </foreach>
+          </when>
+
+          <when test="@io.njdi.durian.xbatis.model.where.Filter@isNotFilter(filter)">
+            NOT
+            <foreach collection="@java.util.Collections@singletonList(filter.filter)" item="filter">
+              <include refid="filter"/>
+            </foreach>
+          </when>
+        </choose>
       </foreach>
     </if>
   </sql>
@@ -75,11 +102,11 @@
       ${table}
     </if>
 
-    <trim prefix="WHERE" prefixOverrides="AND |OR ">
+    <where>
       <include refid="filters">
         <property name="filters" value="wheres"/>
       </include>
-    </trim>
+    </where>
 
     <if test="groups != null and groups.size > 0">
       GROUP BY

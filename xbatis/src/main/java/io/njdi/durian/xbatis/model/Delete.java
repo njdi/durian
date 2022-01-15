@@ -1,5 +1,6 @@
 package io.njdi.durian.xbatis.model;
 
+import io.njdi.durian.xbatis.model.where.Where;
 import lombok.*;
 
 import java.util.List;
@@ -11,5 +12,5 @@ import java.util.List;
 public class Delete {
   private String table;
   @Singular
-  private List<Filter<?>> wheres;
+  private List<Where> wheres;
 }
