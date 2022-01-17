@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Table {
+public class Table implements Checker {
   private String name;
   private String alias;
   @Singular
@@ -38,7 +38,8 @@ public class Table {
   @Builder.Default
   private boolean updateMustHaveWhere = true;
 
-  public void validate() {
+  @Override
+  public void check() {
     if (StringUtils.isEmpty(name)) {
       throw new RuntimeException("Table name is empty(null)");
     }
@@ -57,7 +58,7 @@ public class Table {
                 + " contains empty(null) column");
       }
 
-      column.validate();
+      column.check();
     }
   }
 

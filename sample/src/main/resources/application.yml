@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: sample
+  datasource:
+    url: jdbc:mysql://mysql_dev:13306/yurun?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
+    username: root
+    password: root
+    hikari:
+      keepaliveTime: 30000
+      maxLifetime: 600000
+      maximumPoolSize: 30
+
+mybatis:
+  mapper-locations: classpath:xbatis.xml

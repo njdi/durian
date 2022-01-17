@@ -35,7 +35,7 @@ public class XbatisManagerImpl implements XbatisManager {
   @Autowired
   public XbatisManagerImpl(Database database) {
     this.database = database;
-    this.database.validate();
+    this.database.check();
   }
 
   @Autowired

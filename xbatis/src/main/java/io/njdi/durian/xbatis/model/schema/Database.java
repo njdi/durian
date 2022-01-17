@@ -14,11 +14,12 @@ import java.util.stream.Collectors;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Database {
+public class Database implements Checker {
   @Singular
   private List<Table> tables;
 
-  public void validate() {
+  @Override
+  public void check() {
     if (CollectionUtils.isEmpty(tables)) {
       throw new RuntimeException("Database tables is empty(null)");
     }
@@ -28,7 +29,7 @@ public class Database {
         throw new RuntimeException("Database contains empty(null) table");
       }
 
-      table.validate();
+      table.check();
     }
   }
 

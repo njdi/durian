@@ -1,6 +1,7 @@
 package io.njdi.durian.xbatis.core;
 
 import io.njdi.durian.xbatis.model.*;
+import io.njdi.durian.xbatis.model.schema.Column;
 import io.njdi.durian.xbatis.model.schema.Database;
 import io.njdi.durian.xbatis.model.schema.Table;
 import io.njdi.durian.xbatis.model.where.AndFilter;
@@ -76,6 +77,31 @@ public class Validator {
     }
   }
 
+  private void validateColumnOperate(String tableName, String columnName, Context context) {
+    Table table = database.getTable(tableName);
+    Column column = table.getColumn(columnName);
+
+    switch (context) {
+      case CREATE -> {
+        if (!column.isCreate()) {
+          throw new RuntimeException("Column " + columnName + " of table " + tableName + " doesn't support create");
+        }
+      }
+
+      case UPDATE -> {
+        if (!column.isUpdate()) {
+          throw new RuntimeException("Column " + columnName + " of table " + tableName + " doesn't support update");
+        }
+      }
+
+      case PAGE -> {
+        if (!column.isSelect()) {
+          throw new RuntimeException("Column " + columnName + " of table " + tableName + " doesn't support read");
+        }
+      }
+    }
+  }
+
   private void validatePairs(String tableName, List<Pair<?>> pairs,
                              Context context) {
     if (!(context == Context.CREATE || context == Context.UPDATE)) {
@@ -94,6 +120,8 @@ public class Validator {
         throw new RuntimeException(
                 "Table " + tableName + " doesn't have column " + name);
       }
+
+      validateColumnOperate(tableName, name, context);
 
       Object value = pair.getValue();
       if (Objects.isNull(value)) {
@@ -264,6 +292,8 @@ public class Validator {
         throw new RuntimeException(
                 "Page field name " + name + " doesn't exist");
       }
+
+      validateColumnOperate(tableName, name, Context.PAGE);
 
       String alias = field.getAlias();
       if (Objects.isNull(alias)) {

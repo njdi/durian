@@ -12,7 +12,7 @@ import java.util.Objects;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Column {
+public class Column implements Checker {
   private String name;
   private String alias;
   @Builder.Default
@@ -28,7 +28,8 @@ public class Column {
   @Builder.Default
   private boolean update = true;
 
-  public void validate() {
+  @Override
+  public void check() {
     if (StringUtils.isEmpty(name)) {
       throw new RuntimeException("Column name is empty(null)");
     }
