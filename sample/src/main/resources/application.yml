@@ -12,3 +12,8 @@ spring:
 
 mybatis:
   mapper-locations: classpath:xbatis.xml
+
+logging:
+  level:
+    root: info
+    io.njdi.durian.xbatis: debug

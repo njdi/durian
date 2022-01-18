@@ -7,11 +7,11 @@ import io.njdi.durian.xbatis.model.Creates;
 import io.njdi.durian.xbatis.model.Delete;
 import io.njdi.durian.xbatis.model.Deletes;
 import io.njdi.durian.xbatis.model.Field;
-import io.njdi.durian.xbatis.model.where.Filter;
 import io.njdi.durian.xbatis.model.Page;
 import io.njdi.durian.xbatis.model.Update;
 import io.njdi.durian.xbatis.model.Updates;
 import io.njdi.durian.xbatis.model.schema.Database;
+import io.njdi.durian.xbatis.model.where.Filter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -23,13 +23,14 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Component
 @Slf4j
 public class XbatisManagerImpl implements XbatisManager {
+  private static final String ID = "id";
+
   private final Database database;
 
   @Autowired
@@ -118,36 +119,39 @@ public class XbatisManagerImpl implements XbatisManager {
   }
 
   @Override
-  public <T> T id(String table, String name, Object value, Class<T> clazz,
-                  Field... fields) {
+  public Map<String, Object> id(String table, String name, Object value, Field... fields) {
+    log.debug("table: {}, name: {}, value: {}, fields: {}", table, name, value, fields);
+
+    List<Map<String, Object>> rows = ids(table, name, List.of(value), fields);
+
+    return CollectionUtils.isNotEmpty(rows) ? rows.get(0) : null;
+  }
+
+  @Override
+  public Map<String, Object> id(String table, Integer id, Field... fields) {
+    log.debug("table: {}, id: {}, fields: {}", table, id, fields);
+
+    return id(table, ID, id, fields);
+  }
+
+  @Override
+  public <T> T id(String table, String name, Object value, Class<T> clazz, Field... fields) {
     log.debug("id table: {}, name: {}, value: {}, clazz: {}, fields: {}", table, name, value, clazz, fields);
 
-    List<T> objs = ids(table, name, List.of(value), clazz, fields);
+    Map<String, Object> row = id(table, name, value, fields);
 
-    return CollectionUtils.isNotEmpty(objs) ? objs.get(0) : null;
+    return Bean.convert(clazz, row);
   }
 
   @Override
-  public <T> List<T> ids(String table, String name, List<Object> values,
-                         Class<T> clazz, Field... fields) {
-    log.debug("ids table: {}, name: {}, value: {}, clazz: {}, fields: {}", table, name, values, clazz, fields);
+  public <T> T id(String table, Integer id, Class<T> clazz, Field... fields) {
+    log.debug("table: {}, id: {}, clazz: {}, fields: {}", table, id, clazz, fields);
 
-    if (StringUtils.isEmpty(table)
-            || StringUtils.isEmpty(name)
-            || CollectionUtils.isEmpty(values)
-            || Objects.isNull(clazz)) {
-      return Collections.emptyList();
-    }
-
-
-    List<Map<String, Object>> rows = ids(table, name, values, fields);
-
-    return Bean.converts(clazz, rows);
+    return id(table, ID, id, clazz, fields);
   }
 
   @Override
-  public List<Map<String, Object>> ids(String table, String name,
-                                       List<Object> values, Field... fields) {
+  public List<Map<String, Object>> ids(String table, String name, List<Object> values, Field... fields) {
     log.debug("ids table: {}, name: {}, value: {}, fields: {}", table, name, values, fields);
 
     if (StringUtils.isEmpty(table)
@@ -179,6 +183,29 @@ public class XbatisManagerImpl implements XbatisManager {
             .toList();
 
     return rows;
+  }
+
+  @Override
+  public List<Map<String, Object>> ids(String table, List<Integer> ids, Field... fields) {
+    log.debug("ids table: {}, ids: {}, fields: {}", table, ids, fields);
+
+    return ids(table, ID, Arrays.asList(ids.toArray()), fields);
+  }
+
+  @Override
+  public <T> List<T> ids(String table, String name, List<Object> values, Class<T> clazz, Field... fields) {
+    log.debug("ids table: {}, name: {}, value: {}, clazz: {}, fields: {}", table, name, values, clazz, fields);
+
+    List<Map<String, Object>> rows = ids(table, name, values, fields);
+
+    return Bean.converts(clazz, rows);
+  }
+
+  @Override
+  public <T> List<T> ids(String table, List<Integer> ids, Class<T> clazz, Field... fields) {
+    log.debug("ids table: {}, ids: {}, clazz: {}, fields: {}", table, ids, clazz, fields);
+
+    return ids(table, ID, Arrays.asList(ids.toArray()), clazz, fields);
   }
 
   @Override
