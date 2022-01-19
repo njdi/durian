@@ -56,21 +56,8 @@
             <include refid="filter"/>
           </when>
 
-          <when test="@io.njdi.durian.xbatis.model.where.Filter@isAndFilter(filter)">
-            <foreach collection="filter.filters" item="filter" separator=" AND ">
-              <include refid="filter"/>
-            </foreach>
-          </when>
-
           <when test="@io.njdi.durian.xbatis.model.where.Filter@isOrFilter(filter)">
             <foreach collection="filter.filters" item="filter" open="(" separator=" OR " close=")">
-              <include refid="filter"/>
-            </foreach>
-          </when>
-
-          <when test="@io.njdi.durian.xbatis.model.where.Filter@isNotFilter(filter)">
-            NOT
-            <foreach collection="@java.util.Collections@singletonList(filter.filter)" item="filter">
               <include refid="filter"/>
             </foreach>
           </when>

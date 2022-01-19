@@ -8,9 +8,7 @@ import io.njdi.durian.xbatis.model.Page;
 import io.njdi.durian.xbatis.model.Pair;
 import io.njdi.durian.xbatis.model.Update;
 import io.njdi.durian.xbatis.model.schema.Database;
-import io.njdi.durian.xbatis.model.where.AndFilter;
 import io.njdi.durian.xbatis.model.where.Filter;
-import io.njdi.durian.xbatis.model.where.NotFilter;
 import io.njdi.durian.xbatis.model.where.OrFilter;
 import io.njdi.durian.xbatis.model.where.Where;
 import lombok.extern.slf4j.Slf4j;
@@ -91,15 +89,6 @@ public class Transformer {
     return tableAlias.getOrDefault(table, table);
   }
 
-  private AndFilter transformAndFilter(String table, AndFilter andFilter) {
-    List<Filter> filters = andFilter.getFilters();
-    filters = filters.stream().map(filter -> transformFilter(table, filter)).toList();
-
-    andFilter.setFilters(filters);
-
-    return andFilter;
-  }
-
   private OrFilter transformOrFilter(String table, OrFilter orFilter) {
     List<Filter> filters = orFilter.getFilters();
     filters = filters.stream().map(filter -> transformFilter(table, filter)).toList();
@@ -107,15 +96,6 @@ public class Transformer {
     orFilter.setFilters(filters);
 
     return orFilter;
-  }
-
-  private NotFilter transformNotFilter(String table, NotFilter notFilter) {
-    Filter filter = notFilter.getFilter();
-    transformFilter(table, filter);
-
-    notFilter.setFilter(filter);
-
-    return notFilter;
   }
 
   private Filter transformFilter(String table, Filter filter) {
@@ -132,12 +112,8 @@ public class Transformer {
   }
 
   private Where transformWhere(String table, Where where) {
-    if (where instanceof AndFilter) {
-      return transformAndFilter(table, (AndFilter) where);
-    } else if (where instanceof OrFilter) {
+    if (where instanceof OrFilter) {
       return transformOrFilter(table, (OrFilter) where);
-    } else if (where instanceof NotFilter) {
-      return transformNotFilter(table, (NotFilter) where);
     } else {
       return transformFilter(table, (Filter) where);
     }

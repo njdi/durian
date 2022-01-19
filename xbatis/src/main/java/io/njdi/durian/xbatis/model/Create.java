@@ -2,13 +2,14 @@ package io.njdi.durian.xbatis.model;
 
 import lombok.*;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Create {
+public class Create implements Serializable {
   private Integer id;
   private String table;
   @Singular

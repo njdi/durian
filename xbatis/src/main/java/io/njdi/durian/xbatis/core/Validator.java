@@ -1,12 +1,16 @@
 package io.njdi.durian.xbatis.core;
 
-import io.njdi.durian.xbatis.model.*;
+import io.njdi.durian.xbatis.model.Create;
+import io.njdi.durian.xbatis.model.Delete;
+import io.njdi.durian.xbatis.model.Field;
+import io.njdi.durian.xbatis.model.Order;
+import io.njdi.durian.xbatis.model.Page;
+import io.njdi.durian.xbatis.model.Pair;
+import io.njdi.durian.xbatis.model.Update;
 import io.njdi.durian.xbatis.model.schema.Column;
 import io.njdi.durian.xbatis.model.schema.Database;
 import io.njdi.durian.xbatis.model.schema.Table;
-import io.njdi.durian.xbatis.model.where.AndFilter;
 import io.njdi.durian.xbatis.model.where.Filter;
-import io.njdi.durian.xbatis.model.where.NotFilter;
 import io.njdi.durian.xbatis.model.where.OrFilter;
 import io.njdi.durian.xbatis.model.where.Where;
 import org.apache.commons.collections.CollectionUtils;
@@ -202,27 +206,13 @@ public class Validator {
   }
 
   private void validateWhere(Table table, Where where, Context context) {
-    if (where instanceof AndFilter) {
-      List<Filter> filters = ((AndFilter) where).getFilters();
-      if (CollectionUtils.isEmpty(filters) || filters.size() < 2) {
-        throw new RuntimeException("AndFilter need at least two or more Filters.");
-      }
-
-      filters.forEach(filter -> validateFilter(table, filter, context));
-    } else if (where instanceof OrFilter) {
+    if (where instanceof OrFilter) {
       List<Filter> filters = ((OrFilter) where).getFilters();
       if (CollectionUtils.isEmpty(filters) || filters.size() < 2) {
         throw new RuntimeException("OrFilter need at least two or more Filters.");
       }
 
       filters.forEach(filter -> validateFilter(table, filter, context));
-    } else if (where instanceof NotFilter) {
-      Filter filter = ((NotFilter) where).getFilter();
-      if (Objects.isNull(filter)) {
-        throw new RuntimeException("NotFilter needs a Filter.");
-      }
-
-      validateFilter(table, filter, context);
     } else {
       Filter filter = (Filter) where;
       validateFilter(table, filter, context);
