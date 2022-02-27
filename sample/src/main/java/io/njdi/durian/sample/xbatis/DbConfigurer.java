@@ -15,7 +15,7 @@ public class DbConfigurer {
   public static final String COLUMN_MYTABLE_COL_TWO = "colTwo";
 
   public Table createTable() {
-    Column id = Column.builder().name(COLUMN_MYTABLE_ID).type(Integer.class).implicit(true).create(false).build();
+    Column id = Column.builder().name(COLUMN_MYTABLE_ID).type(Integer.class).implicit(true).create(true).build();
     Column colOne = Column.builder().name(COLUMN_MYTABLE_COL_ONE).alias("col1").implicit(true).build();
     Column colTwo = Column.builder().name(COLUMN_MYTABLE_COL_TWO).alias("col2").implicit(true).build();
 

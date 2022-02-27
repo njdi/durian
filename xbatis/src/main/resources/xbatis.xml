@@ -172,6 +172,14 @@
     <foreach collection="pairs" item="pair" open="(" separator="," close=")">
       #{pair.value}
     </foreach>
+
+    <if test="update">
+      ON DUPLICATE KEY UPDATE
+
+      <foreach collection="pairs" item="pair" separator=",">
+        ${pair.name} = VALUES(${pair.name})
+      </foreach>
+    </if>
   </sql>
 
   <insert id="create" useGeneratedKeys="true" keyProperty="id">

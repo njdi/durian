@@ -14,4 +14,7 @@ public class Create implements Serializable {
   private String table;
   @Singular
   private List<Pair<?>> pairs;
+
+  @Builder.Default
+  private boolean update = false;
 }

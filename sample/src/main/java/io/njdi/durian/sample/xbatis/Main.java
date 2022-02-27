@@ -53,6 +53,37 @@ public class Main implements CommandLineRunner {
     log.info("id: {}", create.getId());
   }
 
+  public void createOrUpdate() {
+    String table = DbConfigurer.TABLE_MYTABLE;
+
+    Pair<Integer> colId = Pair.<Integer>builder()
+            .name(DbConfigurer.COLUMN_MYTABLE_ID)
+            .value(201)
+            .build();
+
+    Pair<String> colOne = Pair.<String>builder()
+            .name(DbConfigurer.COLUMN_MYTABLE_COL_ONE)
+            .value("a")
+            .build();
+    Pair<String> colTwo = Pair.<String>builder()
+            .name(DbConfigurer.COLUMN_MYTABLE_COL_TWO)
+            .value("c")
+            .build();
+
+    Create create = Create.builder()
+            .pair(colId)
+            .pair(colOne)
+            .pair(colTwo)
+            .table(table)
+            .update(true)
+            .build();
+
+    int id = xbatisManager.create(create);
+
+    log.info("id: {}", id);
+    log.info("id: {}", create.getId());
+  }
+
   public void creates() {
     String table = DbConfigurer.TABLE_MYTABLE;
 
@@ -229,7 +260,7 @@ public class Main implements CommandLineRunner {
 
   @Override
   public void run(String... args) {
-    custom();
+    createOrUpdate();
   }
 
   public static void main(String[] args) {

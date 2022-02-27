@@ -4,7 +4,7 @@ spring:
   datasource:
     url: jdbc:mysql://mysql_dev:13306/yurun?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
     username: root
-    password: root
+    password: HUPf0elbIgAKekBR
     hikari:
       keepaliveTime: 30000
       maxLifetime: 600000
