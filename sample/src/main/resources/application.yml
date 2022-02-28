@@ -9,6 +9,9 @@ spring:
       keepaliveTime: 30000
       maxLifetime: 600000
       maximumPoolSize: 30
+  cache:
+    jcache:
+      config: classpath:ehcache.xml
 
 mybatis:
   mapper-locations: classpath:xbatis.xml
@@ -17,3 +20,4 @@ logging:
   level:
     root: info
     io.njdi.durian.xbatis: debug
+    org.ehcache: debug

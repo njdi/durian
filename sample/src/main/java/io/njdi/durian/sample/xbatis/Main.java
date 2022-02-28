@@ -30,14 +30,14 @@ public class Main implements CommandLineRunner {
   private XbatisManager xbatisManager;
 
   public void create() {
-    String table = DbConfigurer.TABLE_MYTABLE;
+    String table = MyTable.TBL_NAME;
 
     Pair<String> colOne = Pair.<String>builder()
-            .name(DbConfigurer.COLUMN_MYTABLE_COL_ONE)
+            .name(MyTable.COL_ONE)
             .value("a")
             .build();
     Pair<String> colTwo = Pair.<String>builder()
-            .name(DbConfigurer.COLUMN_MYTABLE_COL_TWO)
+            .name(MyTable.COL_TWO)
             .value("b")
             .build();
 
@@ -54,19 +54,19 @@ public class Main implements CommandLineRunner {
   }
 
   public void createOrUpdate() {
-    String table = DbConfigurer.TABLE_MYTABLE;
+    String table = MyTable.TBL_NAME;
 
     Pair<Integer> colId = Pair.<Integer>builder()
-            .name(DbConfigurer.COLUMN_MYTABLE_ID)
+            .name(MyTable.COL_ID)
             .value(201)
             .build();
 
     Pair<String> colOne = Pair.<String>builder()
-            .name(DbConfigurer.COLUMN_MYTABLE_COL_ONE)
+            .name(MyTable.COL_ONE)
             .value("a")
             .build();
     Pair<String> colTwo = Pair.<String>builder()
-            .name(DbConfigurer.COLUMN_MYTABLE_COL_TWO)
+            .name(MyTable.COL_TWO)
             .value("c")
             .build();
 
@@ -85,14 +85,14 @@ public class Main implements CommandLineRunner {
   }
 
   public void creates() {
-    String table = DbConfigurer.TABLE_MYTABLE;
+    String table = MyTable.TBL_NAME;
 
     Pair<String> colOne = Pair.<String>builder()
-            .name(DbConfigurer.COLUMN_MYTABLE_COL_ONE)
+            .name(MyTable.COL_ONE)
             .value("a")
             .build();
     Pair<String> colTwo = Pair.<String>builder()
-            .name(DbConfigurer.COLUMN_MYTABLE_COL_TWO)
+            .name(MyTable.COL_TWO)
             .value("b")
             .build();
 
@@ -103,11 +103,11 @@ public class Main implements CommandLineRunner {
             .build();
 
     Pair<String> colOne2 = Pair.<String>builder()
-            .name(DbConfigurer.COLUMN_MYTABLE_COL_ONE)
+            .name(MyTable.COL_ONE)
             .value("c")
             .build();
     Pair<String> colTwo2 = Pair.<String>builder()
-            .name(DbConfigurer.COLUMN_MYTABLE_COL_TWO)
+            .name(MyTable.COL_TWO)
             .value("d")
             .build();
 
@@ -127,10 +127,10 @@ public class Main implements CommandLineRunner {
   }
 
   public void delete() {
-    String table = DbConfigurer.TABLE_MYTABLE;
+    String table = MyTable.TBL_NAME;
 
     Filter colOne = Filter.builder()
-            .name(DbConfigurer.COLUMN_MYTABLE_COL_ONE)
+            .name(MyTable.COL_ONE)
             .operator(Filter.Operator.EQ)
             .value("a")
             .build();
@@ -145,15 +145,15 @@ public class Main implements CommandLineRunner {
   }
 
   public void page() {
-    String table = DbConfigurer.TABLE_MYTABLE;
+    String table = MyTable.TBL_NAME;
 
     Filter filter = Filter.builder()
-            .name(DbConfigurer.COLUMN_MYTABLE_COL_ONE)
+            .name(MyTable.COL_ONE)
             .operator(Filter.Operator.IS_NOT_NULL)
             .build();
 
     Order order = Order.builder()
-            .name(DbConfigurer.COLUMN_MYTABLE_COL_ONE)
+            .name(MyTable.COL_ONE)
             .sort(Order.Sort.DESC)
             .build();
 
@@ -170,15 +170,15 @@ public class Main implements CommandLineRunner {
   }
 
   public void page2() {
-    String table = DbConfigurer.TABLE_MYTABLE;
+    String table = MyTable.TBL_NAME;
 
     Filter filter = Filter.builder()
-            .name(DbConfigurer.COLUMN_MYTABLE_COL_ONE)
+            .name(MyTable.COL_ONE)
             .operator(Filter.Operator.IS_NOT_NULL)
             .build();
 
     Order order = Order.builder()
-            .name(DbConfigurer.COLUMN_MYTABLE_COL_ONE)
+            .name(MyTable.COL_ONE)
             .sort(Order.Sort.DESC)
             .build();
 
@@ -192,7 +192,7 @@ public class Main implements CommandLineRunner {
   }
 
   public void id() {
-    String table = DbConfigurer.TABLE_MYTABLE;
+    String table = MyTable.TBL_NAME;
 
     int id = 106;
 
@@ -201,7 +201,7 @@ public class Main implements CommandLineRunner {
   }
 
   public void id2() {
-    String table = DbConfigurer.TABLE_MYTABLE;
+    String table = MyTable.TBL_NAME;
 
     String name = "id";
     Integer value = 106;
@@ -211,16 +211,16 @@ public class Main implements CommandLineRunner {
   }
 
   public void update() {
-    String table = DbConfigurer.TABLE_MYTABLE;
+    String table = MyTable.TBL_NAME;
 
     Filter filter = Filter.builder()
-            .name(DbConfigurer.COLUMN_MYTABLE_COL_ONE)
+            .name(MyTable.COL_ONE)
             .operator(Filter.Operator.EQ)
             .value("a")
             .build();
 
     Pair<String> pair = Pair.<String>builder()
-            .name(DbConfigurer.COLUMN_MYTABLE_COL_TWO)
+            .name(MyTable.COL_TWO)
             .value("c")
             .build();
 
@@ -235,7 +235,7 @@ public class Main implements CommandLineRunner {
   }
 
   public void custom() {
-    String table = DbConfigurer.TABLE_MYTABLE;
+    String table = MyTable.TBL_NAME;
 
     Field field = Field.builder()
             .name("UPPER(col1)")
@@ -244,7 +244,7 @@ public class Main implements CommandLineRunner {
             .build();
 
     Filter filter = Filter.builder()
-            .name(DbConfigurer.COLUMN_MYTABLE_COL_ONE)
+            .name(MyTable.COL_ONE)
             .operator(Filter.Operator.IS_NOT_NULL)
             .build();
 
