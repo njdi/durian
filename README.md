@@ -1,4 +1,12 @@
-# durian
+# Durian
+
+## Common
+
+**Common** 是一个 Java 应用环境中使用的常用编程组件库，包含：
+
+* [Json](https://github.com/njdi/durian/wiki/Durian-Common-Json)
+* [Bean]()
+* [Uuid]()
 
 ## Xbatis
 
