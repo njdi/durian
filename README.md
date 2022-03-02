@@ -1,5 +1,7 @@
 # Durian
 
+适用于 **Java** 的代码库。
+
 ## Common
 
 **Common** 是一个 Java 应用环境中使用的常用编程组件库，包含：
