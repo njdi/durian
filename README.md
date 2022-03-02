@@ -1,6 +1,6 @@
 # Durian
 
-适用于 **Java** 的代码库。
+**Durian** 是一个适用于 **Java** 的代码库合集。
 
 ## Common
 
