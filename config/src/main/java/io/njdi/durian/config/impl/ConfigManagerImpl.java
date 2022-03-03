@@ -116,11 +116,11 @@ public class ConfigManagerImpl implements ConfigManager {
     }
 
     configBos.sort((c1, c2) -> {
-      if (system.equals(c1.getName())) {
+      if (system.equals(c1.getUid())) {
         return 1;
       }
 
-      if (system.equals(c2.getName())) {
+      if (system.equals(c2.getUid())) {
         return -1;
       }
 
