@@ -31,83 +31,78 @@ public class ConfigManagerImpl implements ConfigManager {
   @Value("${durian.config.system:system}")
   private String system;
 
+  @Value("${durian.config.cache:false}")
+  private boolean cache;
+
   @Autowired
   private XbatisManager xbatisManager;
 
+  public boolean isCache() {
+    return cache;
+  }
+
   @Override
-  @Cacheable
   public String get(String name) {
     return get(system, name);
   }
 
   @Override
-  @Cacheable
   public String[] gets(String name) {
     return gets(system, name);
   }
 
   @Override
-  @Cacheable
   public int getInt(String name) {
     return getInt(system, name);
   }
 
   @Override
-  @Cacheable
   public int[] getInts(String name) {
     return getInts(system, name);
   }
 
   @Override
-  @Cacheable
   public long getLong(String name) {
     return getLong(system, name);
   }
 
   @Override
-  @Cacheable
   public long[] getLongs(String name) {
     return getLongs(system, name);
   }
 
   @Override
-  @Cacheable
   public float getFloat(String name) {
     return getFloat(system, name);
   }
 
   @Override
-  @Cacheable
   public float[] getFloats(String name) {
     return getFloats(system, name);
   }
 
   @Override
-  @Cacheable
   public double getDouble(String name) {
     return getDouble(system, name);
   }
 
   @Override
-  @Cacheable
   public double[] getDoubles(String name) {
     return getDoubles(system, name);
   }
 
   @Override
-  @Cacheable
   public boolean getBoolean(String name) {
     return getBoolean(system, name);
   }
 
   @Override
-  @Cacheable
   public boolean[] getBooleans(String name) {
     return getBooleans(system, name);
   }
 
   @Override
-  @Cacheable
+  @Cacheable(condition = "#root.target.isCache()")
   public String get(String uid, String name) {
     Page page = Page.builder()
             .table(table)
@@ -136,7 +131,7 @@ public class ConfigManagerImpl implements ConfigManager {
   }
 
   @Override
-  @Cacheable
+  @Cacheable(condition = "#root.target.isCache()")
   public String[] gets(String uid, String name) {
     String json = get(uid, name);
     if (!StringUtils.hasLength(json)) {
@@ -147,7 +142,7 @@ public class ConfigManagerImpl implements ConfigManager {
   }
 
   @Override
-  @Cacheable
+  @Cacheable(condition = "#root.target.isCache()")
   public int getInt(String uid, String name) {
     String value = get(uid, name);
     if (!StringUtils.hasLength(value)) {
@@ -158,7 +153,7 @@ public class ConfigManagerImpl implements ConfigManager {
   }
 
   @Override
-  @Cacheable
+  @Cacheable(condition = "#root.target.isCache()")
   public int[] getInts(String uid, String name) {
     String json = get(uid, name);
     if (!StringUtils.hasLength(json)) {
@@ -169,7 +164,7 @@ public class ConfigManagerImpl implements ConfigManager {
   }
 
   @Override
-  @Cacheable
+  @Cacheable(condition = "#root.target.isCache()")
   public long getLong(String uid, String name) {
     String value = get(uid, name);
     if (!StringUtils.hasLength(value)) {
@@ -180,7 +175,7 @@ public class ConfigManagerImpl implements ConfigManager {
   }
 
   @Override
-  @Cacheable
+  @Cacheable(condition = "#root.target.isCache()")
   public long[] getLongs(String uid, String name) {
     String json = get(uid, name);
     if (!StringUtils.hasLength(json)) {
@@ -202,7 +197,7 @@ public class ConfigManagerImpl implements ConfigManager {
   }
 
   @Override
-  @Cacheable
+  @Cacheable(condition = "#root.target.isCache()")
   public float[] getFloats(String uid, String name) {
     String json = get(uid, name);
     if (!StringUtils.hasLength(json)) {
@@ -213,7 +208,7 @@ public class ConfigManagerImpl implements ConfigManager {
   }
 
   @Override
-  @Cacheable
+  @Cacheable(condition = "#root.target.isCache()")
   public double getDouble(String uid, String name) {
     String value = get(uid, name);
     if (!StringUtils.hasLength(value)) {
@@ -224,7 +219,7 @@ public class ConfigManagerImpl implements ConfigManager {
   }
 
   @Override
-  @Cacheable
+  @Cacheable(condition = "#root.target.isCache()")
   public double[] getDoubles(String uid, String name) {
     String json = get(uid, name);
     if (!StringUtils.hasLength(json)) {
@@ -235,7 +230,7 @@ public class ConfigManagerImpl implements ConfigManager {
   }
 
   @Override
-  @Cacheable
+  @Cacheable(condition = "#root.target.isCache()")
   public boolean getBoolean(String uid, String name) {
     String value = get(uid, name);
     if (!StringUtils.hasLength(value)) {
@@ -246,7 +241,7 @@ public class ConfigManagerImpl implements ConfigManager {
   }
 
   @Override
-  @Cacheable
+  @Cacheable(condition = "#root.target.isCache()")
   public boolean[] getBooleans(String uid, String name) {
     String json = get(uid, name);
     if (!StringUtils.hasLength(json)) {
