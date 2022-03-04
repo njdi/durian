@@ -1,7 +1,5 @@
 package io.njdi.durian.common;
 
-import java.lang.reflect.Type;
-
 public class Constant {
   public static final String REQUEST_ID = "X-REQUEST-ID";
 
