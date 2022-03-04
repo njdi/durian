@@ -38,4 +38,6 @@ public class Constant {
   public static final String LINE_THROUGH = "-";
 
   public static final int NEGATIVE_ONE = 1;
+
+  public static final String UNKNOWN = "unknown";
 }
