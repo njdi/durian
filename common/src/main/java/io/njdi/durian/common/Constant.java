@@ -44,4 +44,11 @@ public class Constant {
   public static final Object NULL = null;
 
   public static final String UNKNOWN = "unknown";
+
+  public static final int[] INT_EMPTY_ARRAY = new int[0];
+  public static final long[] LONG_EMPTY_ARRAY = new long[0];
+  public static final float[] FLOAT_EMPTY_ARRAY = new float[0];
+  public static final double[] DOUBLE_EMPTY_ARRAY = new double[0];
+  public static final boolean[] BOOLEAN_EMPTY_ARRAY = new boolean[0];
+  public static final String[] STRING_EMPTY_ARRAY = new String[0];
 }
