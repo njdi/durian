@@ -141,7 +141,7 @@ public class XbatisManagerImpl implements XbatisManager {
 
     Map<String, Object> row = id(table, name, value, fields);
 
-    return Bean.convert(clazz, row);
+    return Objects.nonNull(row) ? Bean.convert(clazz, row) : null;
   }
 
   @Override
