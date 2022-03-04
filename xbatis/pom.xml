@@ -7,7 +7,7 @@
   <parent>
     <groupId>io.njdi</groupId>
     <artifactId>durian</artifactId>
-    <version>0.7.2-SNAPSHOT</version>
+    <version>0.7.2</version>
   </parent>
 
   <artifactId>durian-xbatis</artifactId>
