@@ -7,7 +7,7 @@
   <parent>
     <groupId>io.njdi</groupId>
     <artifactId>durian</artifactId>
-    <version>0.7.5</version>
+    <version>0.7.4</version>
   </parent>
 
   <artifactId>durian-common</artifactId>
@@ -26,11 +26,6 @@
     <dependency>
       <groupId>com.google.code.gson</groupId>
       <artifactId>gson</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
     </dependency>
   </dependencies>
 </project>

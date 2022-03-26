@@ -49,4 +49,7 @@ public class Constant {
   public static final double[] DOUBLE_EMPTY_ARRAY = new double[0];
   public static final boolean[] BOOLEAN_EMPTY_ARRAY = new boolean[0];
   public static final String[] STRING_EMPTY_ARRAY = new String[0];
+
+  public static final String LOCAL_DATE_TIME = "yyyy-MM-dd HH:mm:ss";
+  public static final String LOCAL_DATE = "yyyy-MM-dd 00:00:00";
 }
