@@ -2,6 +2,7 @@ package io.njdi.durian.xbatis.core;
 
 import io.njdi.durian.common.util.Bean;
 import io.njdi.durian.xbatis.XbatisManager;
+import io.njdi.durian.xbatis.model.Count;
 import io.njdi.durian.xbatis.model.Create;
 import io.njdi.durian.xbatis.model.Creates;
 import io.njdi.durian.xbatis.model.Delete;
@@ -229,8 +230,26 @@ public class XbatisManagerImpl implements XbatisManager {
     validator.validate(update);
     update = transformer.transform(update);
 
-    log.debug("delete(transformed): {}", update);
+    log.debug("update(transformed): {}", update);
 
     return xbatisMapper.update(update);
+  }
+
+  @Override
+  public int count(Count count) {
+    log.debug("count: {}", count);
+
+    Page.PageBuilder builder = Page.builder();
+
+    String alias = "count";
+
+    builder.field(Field.builder().name("count(1)").alias(alias).expr(true).build());
+
+    builder.table(count.getTable());
+    builder.wheres(count.getWheres());
+
+    List<Map<String, Object>> rows = page(builder.build());
+
+    return Integer.parseInt(rows.get(0).get(alias).toString());
   }
 }

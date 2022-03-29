@@ -1,5 +1,6 @@
 package io.njdi.durian.xbatis;
 
+import io.njdi.durian.xbatis.model.Count;
 import io.njdi.durian.xbatis.model.Create;
 import io.njdi.durian.xbatis.model.Creates;
 import io.njdi.durian.xbatis.model.Delete;
@@ -44,4 +45,6 @@ public interface XbatisManager {
   int updates(Updates updates);
 
   int update(Update update);
+
+  int count(Count count);
 }
