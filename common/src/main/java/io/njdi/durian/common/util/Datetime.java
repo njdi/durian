@@ -1,6 +1,7 @@
 package io.njdi.durian.common.util;
 
 import io.njdi.durian.common.Constant;
+import org.apache.commons.lang3.StringUtils;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -18,6 +19,10 @@ public class Datetime {
   }
 
   public static boolean isDatetime(String datetime) {
+    if (StringUtils.isEmpty(datetime)) {
+      return false;
+    }
+
     return DATETIME_PATTERN.matcher(datetime).matches();
   }
 }
