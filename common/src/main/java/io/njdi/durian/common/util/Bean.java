@@ -6,7 +6,6 @@ import org.apache.commons.beanutils.Converter;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -47,11 +46,6 @@ public class Bean {
   }
 
   public static synchronized void register(Converter converter, Class<?> clazz) {
-    Converter instance = ConvertUtils.lookup(clazz);
-    if (Objects.nonNull(instance)) {
-      return;
-    }
-
     ConvertUtils.register(converter, clazz);
   }
 }
