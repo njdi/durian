@@ -129,7 +129,7 @@ public class Validator {
 
       Object value = pair.getValue();
       if (Objects.isNull(value)) {
-        throw new RuntimeException("Pair " + name + " value is null");
+        continue;
       }
 
       Class<?> type = table.getColumn(name).getType();
