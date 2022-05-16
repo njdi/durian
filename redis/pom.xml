@@ -7,16 +7,30 @@
     <groupId>io.njdi</groupId>
     <version>0.7.7-snapshot</version>
   </parent>
-
   <modelVersion>4.0.0</modelVersion>
 
-  <artifactId>durian-config</artifactId>
+  <artifactId>durian-redis</artifactId>
 
   <dependencies>
     <dependency>
       <groupId>io.njdi</groupId>
-      <artifactId>durian-xbatis</artifactId>
+      <artifactId>durian-common</artifactId>
       <version>${project.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-data-redis</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
     </dependency>
   </dependencies>
 </project>

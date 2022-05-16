@@ -7,13 +7,14 @@
   <groupId>io.njdi</groupId>
   <artifactId>durian</artifactId>
   <packaging>pom</packaging>
-  <version>0.7.6</version>
+  <version>0.7.7-snapshot</version>
 
   <modules>
     <module>common</module>
     <module>xbatis</module>
     <module>sample</module>
     <module>config</module>
+    <module>redis</module>
   </modules>
 
   <properties>
@@ -72,6 +73,19 @@
       <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-json</artifactId>
+        <version>${spring-boot.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-data-redis</artifactId>
+        <version>${spring-boot.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-test</artifactId>
+        <scope>test</scope>
         <version>${spring-boot.version}</version>
       </dependency>
 
