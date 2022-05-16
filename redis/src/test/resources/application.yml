@@ -5,7 +5,7 @@ spring:
     timeout: 3000
     lettuce:
       pool:
-        enabled: false
+        enabled: true
         max-active: 30
   cache:
     cache-names: testA, testB

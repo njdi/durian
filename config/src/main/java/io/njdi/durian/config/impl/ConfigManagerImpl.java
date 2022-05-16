@@ -23,7 +23,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Service
-@CacheConfig(cacheNames = {"durian.config"})
+@CacheConfig(cacheNames = {"durian::config"})
 public class ConfigManagerImpl implements ConfigManager {
   @Value("${durian.config.table:config}")
   private String table;
