@@ -102,7 +102,7 @@ public class ConfigManagerImpl implements ConfigManager {
   }
 
   @Override
-  @Cacheable(condition = "#root.target.isCache()")
+  @Cacheable(condition = "#root.target.isCache()", sync = true)
   public String get(String uid, String name) {
     Page page = Page.builder()
             .table(table)
@@ -131,7 +131,7 @@ public class ConfigManagerImpl implements ConfigManager {
   }
 
   @Override
-  @Cacheable(condition = "#root.target.isCache()")
+  @Cacheable(condition = "#root.target.isCache()", sync = true)
   public String[] gets(String uid, String name) {
     String json = get(uid, name);
     if (!StringUtils.hasLength(json)) {
@@ -142,7 +142,7 @@ public class ConfigManagerImpl implements ConfigManager {
   }
 
   @Override
-  @Cacheable(condition = "#root.target.isCache()")
+  @Cacheable(condition = "#root.target.isCache()", sync = true)
   public int getInt(String uid, String name) {
     String value = get(uid, name);
     if (!StringUtils.hasLength(value)) {
@@ -153,7 +153,7 @@ public class ConfigManagerImpl implements ConfigManager {
   }
 
   @Override
-  @Cacheable(condition = "#root.target.isCache()")
+  @Cacheable(condition = "#root.target.isCache()", sync = true)
   public int[] getInts(String uid, String name) {
     String json = get(uid, name);
     if (!StringUtils.hasLength(json)) {
@@ -164,7 +164,7 @@ public class ConfigManagerImpl implements ConfigManager {
   }
 
   @Override
-  @Cacheable(condition = "#root.target.isCache()")
+  @Cacheable(condition = "#root.target.isCache()", sync = true)
   public long getLong(String uid, String name) {
     String value = get(uid, name);
     if (!StringUtils.hasLength(value)) {
@@ -175,7 +175,7 @@ public class ConfigManagerImpl implements ConfigManager {
   }
 
   @Override
-  @Cacheable(condition = "#root.target.isCache()")
+  @Cacheable(condition = "#root.target.isCache()", sync = true)
   public long[] getLongs(String uid, String name) {
     String json = get(uid, name);
     if (!StringUtils.hasLength(json)) {
@@ -186,7 +186,7 @@ public class ConfigManagerImpl implements ConfigManager {
   }
 
   @Override
-  @Cacheable
+  @Cacheable(condition = "#root.target.isCache()", sync = true)
   public float getFloat(String uid, String name) {
     String value = get(uid, name);
     if (!StringUtils.hasLength(value)) {
@@ -197,7 +197,7 @@ public class ConfigManagerImpl implements ConfigManager {
   }
 
   @Override
-  @Cacheable(condition = "#root.target.isCache()")
+  @Cacheable(condition = "#root.target.isCache()", sync = true)
   public float[] getFloats(String uid, String name) {
     String json = get(uid, name);
     if (!StringUtils.hasLength(json)) {
@@ -208,7 +208,7 @@ public class ConfigManagerImpl implements ConfigManager {
   }
 
   @Override
-  @Cacheable(condition = "#root.target.isCache()")
+  @Cacheable(condition = "#root.target.isCache()", sync = true)
   public double getDouble(String uid, String name) {
     String value = get(uid, name);
     if (!StringUtils.hasLength(value)) {
@@ -219,7 +219,7 @@ public class ConfigManagerImpl implements ConfigManager {
   }
 
   @Override
-  @Cacheable(condition = "#root.target.isCache()")
+  @Cacheable(condition = "#root.target.isCache()", sync = true)
   public double[] getDoubles(String uid, String name) {
     String json = get(uid, name);
     if (!StringUtils.hasLength(json)) {
@@ -230,7 +230,7 @@ public class ConfigManagerImpl implements ConfigManager {
   }
 
   @Override
-  @Cacheable(condition = "#root.target.isCache()")
+  @Cacheable(condition = "#root.target.isCache()", sync = true)
   public boolean getBoolean(String uid, String name) {
     String value = get(uid, name);
     if (!StringUtils.hasLength(value)) {
@@ -241,7 +241,7 @@ public class ConfigManagerImpl implements ConfigManager {
   }
 
   @Override
-  @Cacheable(condition = "#root.target.isCache()")
+  @Cacheable(condition = "#root.target.isCache()", sync = true)
   public boolean[] getBooleans(String uid, String name) {
     String json = get(uid, name);
     if (!StringUtils.hasLength(json)) {
