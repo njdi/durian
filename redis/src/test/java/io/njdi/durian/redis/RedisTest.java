@@ -14,7 +14,7 @@ public class RedisTest {
 
   @Test
   public void cache() {
-    String result = cacheService.sayHello("world");
+    String result = cacheService.sayHello("hello", "I'm here.");
     System.out.println(result);
   }
 }
