@@ -59,14 +59,14 @@ public class Datetime {
   public static String nextWeekStartTime() {
     return LocalDateTime.now()
             .plusWeeks(1)
-            .with(TemporalAdjusters.previous(DayOfWeek.MONDAY))
+            .with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY))
             .format(DateTimeFormatter.ofPattern(Constant.LOCAL_DATE_TIME_START));
   }
 
   public static String nextWeekEndTime() {
     return LocalDateTime.now()
             .plusWeeks(1)
-            .with(TemporalAdjusters.next(DayOfWeek.SUNDAY))
+            .with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY))
             .format(DateTimeFormatter.ofPattern(Constant.LOCAL_DATE_TIME_END));
   }
 
