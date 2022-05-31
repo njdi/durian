@@ -22,6 +22,7 @@ public class Constant {
   public static final String SLASH = "/";
 
   public static final String COLON = ":";
+  public static final String DOUBLE_COLON = "::";
 
   public static final String NEWLINE = "\n";
 
