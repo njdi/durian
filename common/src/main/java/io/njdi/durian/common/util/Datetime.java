@@ -12,6 +12,12 @@ import java.util.regex.Pattern;
 public class Datetime {
   public static final Pattern DATETIME_PATTERN = Pattern.compile("^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}$");
 
+  public static final long ONE_DAY_MILLISECONDS = 24 * 3600 * 1000;
+
+  public static String date() {
+    return datetime().substring(0, 10);
+  }
+
   public static String datetime() {
     return LocalDateTime.now().format(DateTimeFormatter.ofPattern(Constant.LOCAL_DATE_TIME));
   }
