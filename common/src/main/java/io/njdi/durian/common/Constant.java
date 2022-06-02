@@ -33,8 +33,13 @@ public class Constant {
   public static final String DASH = "-";
 
   public static final String LEFT_PARENTHESIS = "(";
-
   public static final String RIGHT_PARENTHESIS = ")";
+
+  public static final String LEFT_BRACKET = "[";
+  public static final String RIGHT_BRACKET = "]";
+
+  public static final String LEFT_BRACE = "{";
+  public static final String RIGHT_BRACE = "}";
 
   public static final String LINE_THROUGH = "-";
 
