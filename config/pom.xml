@@ -5,7 +5,7 @@
   <parent>
     <artifactId>durian</artifactId>
     <groupId>io.njdi</groupId>
-    <version>0.7.11</version>
+    <version>0.7.12-snapshot</version>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
