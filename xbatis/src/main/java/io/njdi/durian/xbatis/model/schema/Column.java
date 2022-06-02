@@ -19,7 +19,7 @@ public class Column implements Checker {
   private Class<?> type = String.class;
 
   @Builder.Default
-  private boolean implicit = false;
+  private boolean implicit = true;
 
   @Builder.Default
   private boolean create = true;
