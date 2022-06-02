@@ -8,10 +8,12 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
+import io.njdi.durian.common.Constant;
 
 import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public final class Json {
   private static final Gson GSON =
@@ -39,6 +41,52 @@ public final class Json {
 
   public static JsonElement parse(String json) throws JsonParseException {
     return JsonParser.parseString(json);
+  }
+
+  public static boolean isJson(String json) {
+    try {
+      JsonElement element = parse(json);
+
+      return element.isJsonObject() || element.isJsonArray();
+    } catch (JsonParseException e) {
+      return false;
+    }
+  }
+
+  public static boolean isJsonObject(String json) {
+    try {
+      JsonElement element = parse(json);
+
+      return element.isJsonObject();
+    } catch (JsonParseException e) {
+      return false;
+    }
+  }
+
+  public static boolean isJsonArray(String json) {
+    try {
+      JsonElement element = parse(json);
+
+      return element.isJsonArray();
+    } catch (JsonParseException e) {
+      return false;
+    }
+  }
+
+  public static String bracket(String str) {
+    if (Objects.isNull(str)) {
+      return null;
+    }
+
+    return Constant.LEFT_BRACKET + str + Constant.RIGHT_BRACKET;
+  }
+
+  public static String brace(String str) {
+    if (Objects.isNull(str)) {
+      return null;
+    }
+
+    return Constant.LEFT_BRACE + str + Constant.RIGHT_BRACE;
   }
 
   public static class JsonType {
