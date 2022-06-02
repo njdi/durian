@@ -18,12 +18,6 @@ import java.util.List;
 @AllArgsConstructor
 @SuperBuilder
 public class Filter extends Where {
-  public Filter(String name, Operator operator, Object value) {
-    this.name = name;
-    this.operator = operator;
-    this.values = List.of(value);
-  }
-
   static boolean isFilter(Where where) {
     return where instanceof Filter;
   }
