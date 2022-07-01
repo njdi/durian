@@ -1,6 +1,10 @@
 package io.njdi.durian.xbatis.model.schema;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.Singular;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -87,6 +91,14 @@ public class Table implements Checker {
                     StringUtils.isNotEmpty(column.getName())
                             && StringUtils.isNotEmpty(column.getAlias()))
             .collect(Collectors.toMap(Column::getName, Column::getAlias));
+  }
+
+  public void setColumns(List<Column> columns) {
+    this.columns = columns;
+  }
+
+  public void setColumns(Column... columns) {
+    setColumns(List.of(columns));
   }
 
   public boolean containColumn(String columnName) {

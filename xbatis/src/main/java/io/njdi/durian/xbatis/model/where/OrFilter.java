@@ -1,7 +1,5 @@
 package io.njdi.durian.xbatis.model.where;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -15,9 +13,16 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 @NoArgsConstructor
-@AllArgsConstructor
 @SuperBuilder
 public class OrFilter extends Where {
   @Singular
   private List<Filter> filters;
+
+  public OrFilter(List<Filter> filters) {
+    this.filters = filters;
+  }
+
+  public OrFilter(Filter... filters) {
+    this(List.of(filters));
+  }
 }
