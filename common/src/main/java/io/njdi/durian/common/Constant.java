@@ -62,4 +62,7 @@ public class Constant {
 
   public static final double IMAGE_RATION_THREE_TO_FOUR = 3 / 4.0;
   public static final double IMAGE_RATION_FOUR_TO_THREE = 4 / 3.0;
+
+  public static final String HTTP = "http";
+  public static final String HTTPS = "https";
 }
