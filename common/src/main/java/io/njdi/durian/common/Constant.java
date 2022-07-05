@@ -59,4 +59,7 @@ public class Constant {
   public static final String LOCAL_DATE_TIME = "yyyy-MM-dd HH:mm:ss";
   public static final String LOCAL_DATE_TIME_START = "yyyy-MM-dd 00:00:00";
   public static final String LOCAL_DATE_TIME_END = "yyyy-MM-dd 23:59:59";
+
+  public static final double IMAGE_RATION_THREE_TO_FOUR = 3 / 4.0;
+  public static final double IMAGE_RATION_FOUR_TO_THREE = 4 / 3.0;
 }
